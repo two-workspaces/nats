@@ -13,7 +13,7 @@ set -u
 log() { echo "[railway] $*"; }
 
 DATA=/data
-mkdir -p "$DATA/jetstream"
+mkdir -p "$DATA"
 
 PORT="${PORT:-8222}"
 case "$PORT" in '' | *[!0-9]*) log "PORT=$PORT is not a number, using 8222"; PORT=8222 ;; esac
@@ -67,7 +67,8 @@ else
     echo '  compression: true'
     echo '}'
     echo 'jetstream {'
-    echo "  store_dir: \"$DATA/jetstream\""
+    # NATS adds the jetstream/ directory itself: streams land in /data/jetstream.
+    echo "  store_dir: \"$DATA\""
     echo "  max_memory_store: $mem"
     [ -n "$file" ] && echo "  max_file_store: $file"
     echo '}'
